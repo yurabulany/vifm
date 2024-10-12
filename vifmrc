@@ -542,12 +542,19 @@ nnoremap L :tabnext<cr>:view!<cr>
 nnoremap Q :q<cr>
 
 " use fzf to fuzzy search and run file
-command! FZFfind : set noquickview
-                \| let $FZF_PICK = term('find ./* | fzf --height 10 2>/dev/tty')
-                \| if $FZF_PICK != ''
-                \|     execute 'goto' fnameescape($FZF_PICK)
-                \| endif
-nnoremap / :FZFfind<cr>
+" command! FZFfind : set noquickview
+"                 \| let $FZF_PICK = term('find ./* | fzf --height 10 2>/dev/tty')
+"                 \| if $FZF_PICK != ''
+"                 \|     execute 'goto' fnameescape($FZF_PICK)
+"                 \| endif
+" nnoremap / :FZFfind<cr>
+
+command! FZFlocate : set noquickview
+                  \| let $FZF_PICK = term('locate $HOME | fzf --height 10 2>/dev/tty')
+                  \| if $FZF_PICK != ''
+                  \|     execute system('[ -f "$FZF_PICK" ] && echo goto || echo cd') fnameescape($FZF_PICK)
+                  \| endif
+nnoremap / :FZFlocate<cr>
 
 " set format of file modification time
 set timefmt='%b %d, %Y @ %H:%M'
